@@ -23,6 +23,7 @@
     "sf:describe": "aws stepfunctions --endpoint http://localhost:8083 describe-execution"
   },
   "devDependencies": {
+    "@types/node": "^14.14.14",
     "chai": "^4.2.0",
     "mocha": "^8.2.1"
   }

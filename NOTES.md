@@ -1,3 +1,5 @@
+## Main notes
+
 - run SAM lambda service API on debug mode (all lambdas are run with --inspect-brk flag)
   `sam local start-lambda -d 5678`
 
@@ -39,10 +41,10 @@ on npm scripts
 
 ## Short Hands (A.K.A. TL;DR)
 
-- Start SAM lambda service
+- Start SAM lambda local aws service
   `npm run service:lambda`
 
-- Start SAM step function service
+- Start SAM step function local aws service
   `npm run service:step-function`
 
 - Upload step function definition into SF service

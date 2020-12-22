@@ -4,7 +4,20 @@
   "States": {
     "HelloWorld": {
       "Type": "Task",
-      "Resource": "arn:aws:lambda:us-east-1:123456789012:function:HelloWorldLambdaFunction",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName": "arn:aws:lambda:us-east-1:123456789012:function:HelloWorldLambdaFunction",
+        "Payload.$": "$"
+      },
+      "Next": "TsNode"
+    },
+    "TsNode": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::lambda:invoke",
+      "Parameters": {
+        "FunctionName": "arn:aws:lambda:us-east-1:123456789012:function:TypescriptNodeLambdaFunction",
+        "Payload.$": "$"
+      },
       "End": true
     }
   }

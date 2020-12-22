@@ -1,14 +1,25 @@
-AWSTemplateFormatVersion: '2010-09-09'
+AWSTemplateFormatVersion: "2010-09-09"
 Transform: AWS::Serverless-2016-10-31
 Description: >
   Simple SAM template for experimenting debug SF workflow
-  
+
 # More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
 Globals:
   Function:
     Timeout: 3
 
 Resources:
+  SamDependenciesLayer:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      LayerName: sam-app-dependencies
+      Description: Dependencies for sam app
+      ContentUri: dependencies/
+      CompatibleRuntimes:
+        - nodejs12.x
+      RetentionPolicy: Retain
+    Metadata:
+      BuildMethod: nodejs12.x
   HelloWorldLambdaFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
@@ -16,19 +27,21 @@ Resources:
       Handler: app.lambdaHandler
       Runtime: nodejs12.x
       Environment:
-          Variables:
-              SOME_ENV_VAR: foobar
+        Variables:
+          SOME_ENV_VAR: foobar
       # Events:
       #   HelloWorld:
       #     Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
       #     Properties:
-      #       Path: /hello
+      #       Patuh: /hello
       #       Method: get
   TypescriptNodeLambdaFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: /src/lambda/ts-node/
-      Handler: Handler
+      CodeUri: ./src/lambda/ts-node/
+      Handler: app.lambdaHandler
+      Layers:
+        - !Ref SamDependenciesLayer
       Runtime: nodejs12.x
 
 Outputs:
@@ -43,7 +56,7 @@ Outputs:
     Description: "Hello World Lambda Function ARN"
     Value: !GetAtt HelloWorldFunction.Arn
 
-  TypescriptLambdaFunction:
+  TypescriptNodeLambdaFunction:
     Description: "Typescript tests lambda function"
     Value: !GetAtt TypescriptNodeLambdaFunction.Arn
 
