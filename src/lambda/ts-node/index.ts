@@ -5,20 +5,19 @@ interface ISomeResponse {
   body: string;
 }
 
-export function handler(event, context, callback) {
+export async function handler(event: any, context: any) {
   let response: ISomeResponse;
 
-  console.log(response);
   console.log(event);
   console.log(context);
 
   response = {
     statusCode: 200,
     body: JSON.stringify({
-      message: 'typescript handler',
+      message: "typescript handler",
       // envVariables: process.env,
     }),
   };
-
-  callback(undefined, response);
+  console.log(response);
+  return { message: "ok!" };
 }

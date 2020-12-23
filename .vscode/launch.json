@@ -1,15 +1,31 @@
 {
   "configurations": [
     {
-      "name": "NodeJS: Remote Attach",
+      "name": "SAM TS Webpack debugging",
       "type": "node",
       "request": "attach",
-      "port": 5678,
       "address": "localhost",
-      "localRoot": "./",
+      "port": 5678,
+      // Location to where the transpiled JS file is: follows CodeUri
+      "localRoot": "${workspaceRoot}/build/${input:pickLambda}",
       "remoteRoot": "/var/task",
       "protocol": "inspector",
-      "skipFiles": ["/var/runtime/node_modules/**/*.js", "<node_internals>/**/*.js"]
+      "stopOnEntry": false,
+      // Same as LocalRoot given we run on a docker container
+      // outFiles allows VSCode debugger to know where the source code is after finding its sourceMap
+      "outFiles": ["${workspaceRoot}/build/${input:pickLambda}/index.js"],
+      // instructs debugger to use sourceMap to identify correct breakpoint line
+      // and more importantly expand line/column numbers correctly as code is minified
+      "sourceMaps": true
+    }
+  ],
+  "inputs": [
+    {
+      "id": "pickLambda",
+      "description": "Pick lambda sourcemaps to be used",
+      "type": "pickString",
+      "options": ["hello-world", "ts-node"],
+      "default": "hello-world"
     }
   ]
 }

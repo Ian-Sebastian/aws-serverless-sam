@@ -9,39 +9,21 @@ Globals:
     Timeout: 3
 
 Resources:
-  SamDependenciesLayer:
-    Type: AWS::Serverless::LayerVersion
-    Properties:
-      LayerName: sam-app-dependencies
-      Description: Dependencies for sam app
-      ContentUri: dependencies/
-      CompatibleRuntimes:
-        - nodejs12.x
-      RetentionPolicy: Retain
-    Metadata:
-      BuildMethod: nodejs12.x
   HelloWorldLambdaFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
-      CodeUri: ./src/lambda/hello-world/
-      Handler: app.lambdaHandler
+      CodeUri: build/hello-world
+      Handler: index.handler
       Runtime: nodejs12.x
       Environment:
         Variables:
           SOME_ENV_VAR: foobar
-      # Events:
-      #   HelloWorld:
-      #     Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
-      #     Properties:
-      #       Patuh: /hello
-      #       Method: get
+
   TypescriptNodeLambdaFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: ./src/lambda/ts-node/
-      Handler: app.lambdaHandler
-      Layers:
-        - !Ref SamDependenciesLayer
+      CodeUri: build/ts-node/
+      Handler: index.handler
       Runtime: nodejs12.x
 
 Outputs:
