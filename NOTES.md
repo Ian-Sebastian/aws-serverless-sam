@@ -60,3 +60,43 @@ on npm scripts
   `npm run sf:describe -- --execution-arn <execution-arn-identifier>`
 
 
+## Main resources
+
+https://docs.aws.amazon.com/step-functions/latest/dg/sfn-local-lambda.html#start-local-lambda
+
+https://gist.github.com/heitorlessa/a087f4394b38562e1a0aa128386b38b8
+
+https://aws.amazon.com/blogs/compute/working-with-aws-lambda-and-lambda-layers-in-aws-sam/
+
+https://github.com/aws/aws-toolkit-vscode/blob/master/docs/debugging-nodejs-lambda-functions.md
+
+_[Spawn docker containers from within a cotainer (SAM local on a docker container, able to create lambdas containers)](https://www.reddit.com/r/docker/comments/5qdhq7/spawning_containers_from_within_a_container/dcyieiy/)_
+
+
+## Other resources
+
+https://stackoverflow.com/questions/48273346/vscode-command-for-user-input-in-debug-launch-config
+
+https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-resource-function.html#sam-function-environment
+
+https://code.visualstudio.com/docs/editor/variables-reference#_configuration-variables
+
+https://code.visualstudio.com/docs/editor/variables-reference
+
+https://stackoverflow.com/questions/39108476/ts-node-programmatic-usage-with-requirets-node-register
+
+https://hackernoon.com/using-typescript-for-aws-lambda-a-how-to-guide-juf3yh3
+
+https://medium.com/@henrikbjorn/using-typescript-with-aws-sam-local-4a73b4a9aef0
+
+https://levelup.gitconnected.com/how-to-use-typescript-for-aws-lambda-in-3-steps-1996243547eb
+
+https://www.blackpepper.co.uk/blog/getting-started-with-aws-sam
+
+https://levelup.gitconnected.com/how-to-test-aws-lambda-locally-3395ca785276
+
+https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-specification-template-anatomy-globals.html
+
+https://docs.docker.com/compose/environment-variables/
+
+
