@@ -72,6 +72,38 @@ https://github.com/aws/aws-toolkit-vscode/blob/master/docs/debugging-nodejs-lamb
 
 _[Spawn docker containers from within a cotainer (SAM local on a docker container, able to create lambdas containers)](https://www.reddit.com/r/docker/comments/5qdhq7/spawning_containers_from_within_a_container/dcyieiy/)_
 
+## Docker related resources
+
+https://serverfault.com/questions/1018655/cant-ping-access-docker-host-on-172-17-0-1-from-inside-a-container
+
+https://serverfault.com/questions/705192/iptables-rule-set-so-that-a-docker-container-can-access-a-service-on-a-host-ip
+
+https://github.com/docker/for-linux/issues/264#issuecomment-714253414
+
+https://stackoverflow.com/questions/31324981/how-to-access-host-port-from-docker-container/61424570#61424570
+
+https://dev.to/natterstefan/docker-tip-how-to-get-host-s-ip-address-inside-a-docker-container-5anh
+
+---
+
+https://serverfault.com/questions/634823/in-which-order-are-rules-of-custom-iptables-chains-evaluated
+
+https://www.howtogeek.com/177621/the-beginners-guide-to-iptables-the-linux-firewall/
+
+https://www.cyberciti.biz/faq/how-to-list-all-iptables-rules-in-linux/
+
+https://stackoverflow.com/questions/30383845/what-is-the-best-practice-of-docker-ufw-under-ubuntu
+
+https://www.informit.com/articles/article.aspx?p=421057&seqNum=4
+
+https://medium.com/faun/run-the-containers-in-default-bridge-network-with-docker-compose-yml-f8e57590722
+
+https://docs.docker.com/network/bridge/#connect-a-container-to-a-user-defined-bridge
+
+https://github.com/docker/for-win/issues/2402
+
+https://stackoverflow.com/questions/29076194/using-add-host-or-extra-hosts-with-docker-compose
+
 
 ## Other resources
 

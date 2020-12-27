@@ -7,8 +7,14 @@ This code repository users the following technologies, enabling step-through deb
 - _AWS SAM_: AWS binary for working with serverless technologies. It allows to mount a lambda/api gateway architecture using `template.yaml` file. As per AWS documentation, this uses the same underlying technology used at AWS to orchestate the service. TODO: _put this into the same docker-compose file present at the current repo_
 - _AWS Step functions local_: Docker image which mounts step function service locally. As per AWS documentation, this is also the oficial underlying technology used on AWS service. Can process step function definitions locally, and orchestate SAM local lambda calls accordingly.
 - _VS Code debugging_: `launch.json` is configured to attach to remote node debugger port `5678` on localhost (A.K.A running lambda container with SAM local). It also maps local and remote folders with corresponding source maps.
+- _AWS Toolkit_: VSCode extension. Not necessary, but can improve suggestions and debug conigurations on vscode.
 
   Since VScode have no way to know which lambda is being triggered by step function definition at time, we have to attach to each lambda individually. When launching debugger, you will be prompted to select which lambda sourcemap you want to use. Select the lambda you want to debug _et voilá_.
+
+## Prerequisites
+
+- (Latest docker version 20.04)[https://docs.docker.com/engine/install/]
+- AWS SAM CLI (keep reading below)
 
 ## How to try this out
 
@@ -53,6 +59,26 @@ Once this is done, look at the window where `npm run service:lambda:debug` is ru
 
 - describe execution
   `npm run sf:describe -- --execution-arn <execution-arn-identifier>`
+
+## Troubleshoting
+
+There's a chance that containers running withindocker compose cannot hit the host running services. This proved to be something related to the way firewall is configured into host's machine. In the case of a linux host, simply add this line to iptables rules in order to accept `docker0` interface incoming traffic.
+
+`sudo iptables -A INPUT -i docker0 -j ACCEPT`
+
+This will accept all incoming traffic from docker containers attached to the same bridge interface (specified on docker compose file), making host services (an api, or sam lambdas running on local) to be exposed to internal containers.
+
+## Windows, MacOS and Linux docker networking
+
+Since docker networking varies among different OS, we use the following lines in order to modify container's hosts files to add host IP address (which can be dynamic from machine to machine).
+
+```
+extra_hosts:
+      - host.docker.internal:host-gateway
+```
+This way, code inside the containers can use `host.docker.internal` to reference docker host services
+
+---
 
 # Sam-app original README file
 

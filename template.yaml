@@ -36,7 +36,7 @@ Outputs:
 
   HelloWorldLambdaFunction:
     Description: "Hello World Lambda Function ARN"
-    Value: !GetAtt HelloWorldFunction.Arn
+    Value: !GetAtt HelloWorldLambdaFunction.Arn
 
   TypescriptNodeLambdaFunction:
     Description: "Typescript tests lambda function"
