@@ -62,6 +62,8 @@ on npm scripts
 
 ## Main resources
 
+https://aws.amazon.com/blogs/compute/the-aws-serverless-application-model-cli-is-now-generally-available/
+
 https://docs.aws.amazon.com/step-functions/latest/dg/sfn-local-lambda.html#start-local-lambda
 
 https://gist.github.com/heitorlessa/a087f4394b38562e1a0aa128386b38b8
@@ -70,7 +72,8 @@ https://aws.amazon.com/blogs/compute/working-with-aws-lambda-and-lambda-layers-i
 
 https://github.com/aws/aws-toolkit-vscode/blob/master/docs/debugging-nodejs-lambda-functions.md
 
-_[Spawn docker containers from within a cotainer (SAM local on a docker container, able to create lambdas containers)](https://www.reddit.com/r/docker/comments/5qdhq7/spawning_containers_from_within_a_container/dcyieiy/)_
+_[Spawn docker containers from within a container (SAM local on a docker container, able to create lambdas containers)](https://www.reddit.com/r/docker/comments/5qdhq7/spawning_containers_from_within_a_container/dcyieiy/)_
+
 
 ## Docker related resources
 
@@ -83,6 +86,20 @@ https://github.com/docker/for-linux/issues/264#issuecomment-714253414
 https://stackoverflow.com/questions/31324981/how-to-access-host-port-from-docker-container/61424570#61424570
 
 https://dev.to/natterstefan/docker-tip-how-to-get-host-s-ip-address-inside-a-docker-container-5anh
+
+## Docker networks and service discovery
+
+https://stackoverflow.com/questions/54798633/how-to-connect-rds-instance-when-running-sam-locally/54857559
+
+https://stackoverflow.com/questions/46781444/docker-service-discovery-does-not-work-with-default-bridge
+
+https://docs.docker.com/config/containers/container-networking/
+
+https://collabnix.com/demonstrating-docker-1-12-service-discovery-with-docker-compose/
+
+https://docs.docker.com/network/network-tutorial-standalone/
+
+https://forums.docker.com/t/set-default-network-name-for-compose/36779/2
 
 ---
 
@@ -103,6 +120,30 @@ https://docs.docker.com/network/bridge/#connect-a-container-to-a-user-defined-br
 https://github.com/docker/for-win/issues/2402
 
 https://stackoverflow.com/questions/29076194/using-add-host-or-extra-hosts-with-docker-compose
+
+---
+
+https://medium.com/monsoon-engineering/running-aws-sam-in-a-docker-container-2491596672c2
+
+https://dev.to/martzcodes/aws-sam-local-with-postgres-ogh
+
+https://github.com/docker/compose/issues/2999
+
+https://nickjanetakis.com/blog/docker-tip-65-get-your-docker-hosts-ip-address-from-in-a-container
+
+https://stackoverflow.com/questions/24319662/from-inside-of-a-docker-container-how-do-i-connect-to-the-localhost-of-the-mach#:~:text=Use%20%2D%2Dnetwork%3D%22host%22,for%20Linux%2C%20per%20the%20documentation.
+
+https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-cli-command-reference-sam-local-start-lambda.html
+
+https://stackoverflow.com/questions/48104665/aws-sam-local-environment-variables
+
+https://stackoverflow.com/questions/11580961/sending-command-line-arguments-to-npm-script
+
+https://github.com/ruyadorno/ntl
+
+https://github.com/aws/aws-sam-cli/issues/1163#issuecomment-557874976
+
+https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/parameters-section-structure.html
 
 
 ## Other resources

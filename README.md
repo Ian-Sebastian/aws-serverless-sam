@@ -13,7 +13,7 @@ This code repository users the following technologies, enabling step-through deb
 
 ## Prerequisites
 
-- (Latest docker version 20.04)[https://docs.docker.com/engine/install/]
+- [Latest docker version 20.04](https://docs.docker.com/engine/install/)
 - AWS SAM CLI (keep reading below)
 
 ## How to try this out
@@ -27,10 +27,10 @@ Having done that, execute the following commands to raise and debug lambdas thro
 - Install dependencies with `npm install`
 - Start Webpack typescript transpilation with hot reloading (leave this terminal running)
   `npm run watch`
+  - Start SAM step function local aws service (will raise a docker-compose file, leave this terminal running). This will also create a docker bridge network labeled `sam-network`, which all compose services and lambdas containers will connect to. Compose Service discovery can be used within lambdas!
+  `npm run service:step-function`
 - Start SAM lambda local aws service with debug flag (will execute webpack build files, also leave this terminal running)
   `npm run service:lambda:debug`
-- Start SAM step function local aws service (will raise a docker-compose file, leave this terminal running)
-  `npm run service:step-function`
 - Upload step function definition into SF service
   `npm run upload:sf-definition`
 - run step function
@@ -42,11 +42,11 @@ Once this is done, look at the window where `npm run service:lambda:debug` is ru
 
 ## Commands notes shortcuts
 
-- Start SAM lambda local aws service
-  `npm run service:lambda`
-
 - Start SAM step function local aws service
   `npm run service:step-function`
+
+- Start SAM lambda local aws service
+  `npm run service:lambda`
 
 - Upload step function definition into SF service
   `npm run upload:sf-definition`
@@ -62,21 +62,80 @@ Once this is done, look at the window where `npm run service:lambda:debug` is ru
 
 ## Troubleshoting
 
-There's a chance that containers running withindocker compose cannot hit the host running services. This proved to be something related to the way firewall is configured into host's machine. In the case of a linux host, simply add this line to iptables rules in order to accept `docker0` interface incoming traffic.
+There's a chance that containers running within docker compose cannot hit the host running services. This proved to be something related to the way firewall is configured into host's machine. In the case of a linux host, simply add this line to iptables rules in order to accept `docker0` interface incoming traffic.
 
 `sudo iptables -A INPUT -i docker0 -j ACCEPT`
 
 This will accept all incoming traffic from docker containers attached to the same bridge interface (specified on docker compose file), making host services (an api, or sam lambdas running on local) to be exposed to internal containers.
 
-## Windows, MacOS and Linux docker networking
+## About docker networking
 
-Since docker networking varies among different OS, we use the following lines in order to modify container's hosts files to add host IP address (which can be dynamic from machine to machine).
+Since docker networking varies among different OS, we use the different techniques in order to achieve connectivity from/into lambda containers. Generally speaking, we raise services through docker-compose to be consumed by lambdas, all of which then connect to each other through `sam-network`, generated on docker-compose up.
+
+### Windows and MacOS docker networking
+
+For windows and mac, docker runtime already implements a reference to the docker host ip address with `host.docker.internal`. As a matter of readability, this is also declared as an extra hosts option passed into docker compose file.
 
 ```
 extra_hosts:
       - host.docker.internal:host-gateway
 ```
-This way, code inside the containers can use `host.docker.internal` to reference docker host services
+This way, code inside the containers can use `host.docker.internal` to reference docker host mounted services.
+
+This also works on linux, but since lambdas run with AWS SAM runtime, we cannot use this approach to expose dinamycally docker host ip to lambdas.
+
+### Linux docker networking
+
+For lambdas (SAM CLI), since there i no way to pass `host.docker.internal:host-gateway` into spawning containers, we define `HOST_DOCKER_INTERNAL` as an environment variable containing the ip address of the docker host
+
+```
+HOST_DOCKER_INTERNAL=$(ip -4 addr show docker0 | grep -Po 'inet \K[\d.]+')
+```
+
+This variable can then be used to access docker host from lambdas code. To setup this, we define a parameter on the `template.yaml` SAM file
+
+```
+[...]
+Parameters:
+  HostDockerInternal:
+    Type: String
+    Description: Docker host ip address. Default works for Mac and Windows.
+    Default: "host.docker.internal"
+    Resources:
+  HelloWorldLambdaFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: build/hello-world
+      Handler: index.handler
+      Runtime: nodejs12.x
+      Environment:
+        Variables:
+          HOST_DOCKER_INTERNAL: !Ref HostDockerInternal
+[...]
+```
+
+Then we override the default through npm scripts
+
+```
+"service:lambda:debug:unix": "sam local start-lambda -d 5678 --host 0.0.0.0 --docker-network sam-network --parameter-overrides HostDockerInternal=$(ip -4 addr show docker0 | grep -Po 'inet \\K[\\d.]+')",
+```
+
+Et voilá, we got access to docker compose services and docker host running services from lambda, also maintaining connectivity with AWS cloud services at the same time :tada:
+
+
+### Extra 
+
+Other option could be, from within the containers, run this command, in order to get the ip address of the default gateway dinamically (A.K.A. docker host):
+
+```
+export DOCKER_HOST_IP=$(route -n | awk '/UG[ \t]/{print $2}')
+```
+
+## Other important stuff
+
+- Webpack ignore postgres native plugin
+https://stackoverflow.com/questions/41522744/webpack-import-error-with-node-postgres-pg-client
+
 
 ---
 

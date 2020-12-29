@@ -1,5 +1,6 @@
 const path = require('path');
 const glob = require('glob');
+const webpack = require('webpack');
 
 // Credits: https://hackernoon.com/webpack-creating-dynamically-named-outputs-for-wildcarded-entry-files-9241f596b065
 const entryArray = glob.sync('./src/lambda/**/index.ts');
@@ -28,6 +29,7 @@ module.exports = {
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
   },
+  plugins: [new webpack.IgnorePlugin({ resourceRegExp: /^pg-native$/ })],
   // Output directive will generate build/<function-name>/index.js
   output: {
     filename: '[name]/index.js',

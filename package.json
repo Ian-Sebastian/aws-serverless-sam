@@ -7,8 +7,10 @@
   "author": "SAM CLI",
   "license": "MIT",
   "dependencies": {
+    "@types/pg": "^7.14.7",
     "aws-sdk": "^2.816.0",
-    "axios": "^0.21.0"
+    "axios": "^0.21.0",
+    "pg": "^8.5.1"
   },
   "scripts": {
     "watch": "NODE_ENV=dev webpack --watch --mode=development",
@@ -16,12 +18,14 @@
     "lint": "tslint --project tsconfig.json",
     "test:jest": "jest",
     "test": "mocha tests/unit/",
-    "service:lambda": "sam local start-lambda --host 0.0.0.0",
-    "service:lambda:debug": "sam local start-lambda -d 5678 --host 0.0.0.0",
     "service:step-function": "docker-compose up",
     "upload:sf-definition": "aws stepfunctions --endpoint http://localhost:8083 create-state-machine --definition $(node ./utils/parse-definition.js) --name \"step-function-test\" --role-arn \"arn:aws:iam::012345678901:role/DummyRole\"",
     "update:sf-definition": "aws stepfunctions --endpoint http://localhost:8083 update-state-machine --state-machine-arn \"arn:aws:states:us-east-1:123456789012:stateMachine:step-function-test\" --definition $(node ./utils/parse-definition.js)",
     "read:step-functions": "aws stepfunctions list-state-machines --endpoint http://localhost:8083",
+    "service:lambda": "sam local start-lambda --host 0.0.0.0 --docker-network sam-network",
+    "service:lambda:debug": "sam local start-lambda -d 5678 --host 0.0.0.0 --docker-network sam-network",
+    "service:lambda:unix": "sam local start-lambda --host 0.0.0.0 --docker-network sam-network --parameter-overrides HostDockerInternal=$(ip -4 addr show docker0 | grep -Po 'inet \\K[\\d.]+')",
+    "service:lambda:debug:unix": "sam local start-lambda -d 5678 --host 0.0.0.0 --docker-network sam-network --parameter-overrides HostDockerInternal=$(ip -4 addr show docker0 | grep -Po 'inet \\K[\\d.]+')",
     "sf": "aws stepfunctions --endpoint http://localhost:8083 start-execution --state-machine arn:aws:states:us-east-1:123456789012:stateMachine:step-function-test",
     "sf:describe": "aws stepfunctions --endpoint http://localhost:8083 describe-execution"
   },

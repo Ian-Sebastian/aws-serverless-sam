@@ -1,4 +1,4 @@
-version: "3.3"
+version: "3.5"
 
 services:
   aws-step-functions:
@@ -22,8 +22,22 @@ services:
       - STEP_FUNCTIONS_ENDPOINT=http://host.docker.internal:8083
     extra_hosts:
       - host.docker.internal:host-gateway
-    network_mode: bridge
-  # Container's connectivity debugging tool
+    networks:
+      - sam-network
+  postgres:
+    container_name: postgres
+    image: postgres:12
+    ports:
+      - 5432:5432
+    volumes:
+      - ./utils/init.sql:/docker-entrypoint-initdb.d/init.sql
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: user_db
+      PG_DATA: /var/lib/postgresql/data
+    networks:
+      - sam-network
   curl-tool:
     container_name: curl-tool
     image: raesene/alpine-noroot-containertools
@@ -33,4 +47,8 @@ services:
     user: root
     extra_hosts:
       - host.docker.internal:host-gateway
-    network_mode: bridge
+    networks:
+      - sam-network
+networks:
+  sam-network:
+    name: sam-network

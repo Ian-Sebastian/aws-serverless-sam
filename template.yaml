@@ -8,6 +8,12 @@ Globals:
   Function:
     Timeout: 3
 
+Parameters:
+  HostDockerInternal:
+    Type: String
+    Description: Docker host ip address. Default works for Mac and Windows.
+    Default: "host.docker.internal"
+
 Resources:
   HelloWorldLambdaFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
@@ -17,7 +23,7 @@ Resources:
       Runtime: nodejs12.x
       Environment:
         Variables:
-          SOME_ENV_VAR: foobar
+          HOST_DOCKER_INTERNAL: !Ref HostDockerInternal
 
   TypescriptNodeLambdaFunction:
     Type: AWS::Serverless::Function
@@ -25,6 +31,9 @@ Resources:
       CodeUri: build/ts-node/
       Handler: index.handler
       Runtime: nodejs12.x
+      Environment:
+        Variables:
+          HOST_DOCKER_INTERNAL: !Ref HostDockerInternal
 
 Outputs:
   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
